@@ -1,4 +1,4 @@
-package Pages;
+package pages;
 
 import org.junit.After;
 import org.junit.Before;
@@ -6,14 +6,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+
 import static org.junit.Assert.assertTrue;
+import static utils.WebDriverFactory.create;
 
 @RunWith(Parameterized.class)
 public class OrderPageTest {
     private WebDriver driver;
-    private final String browser;
+    private final String browser;// = System.getProperty("browser", "firefox");
+
     private final String name;
     private final String surname;
     private final String address;
@@ -45,27 +46,16 @@ public class OrderPageTest {
     public static Object[][] dataTest() {
         return new Object[][] {
                 // Тестовый набор 1
-                {"firefox", "Ирина", "Хлыстова", "ул. Мира, 99", "Чистые пруды", "+79998884455", "30.10.2026", "трое суток", true, false, "Жду самокат"},
-                {"chrome", "Ирина", "Хлыстова", "ул. Мира, 99", "Чистые пруды", "+79998884455", "30.10.2026", "трое суток", true, false, "Жду самокат"},
+                {"firefox", "Ирина", "Хлыстова", "ул. Мира, 99", "Чистые пруды", "+79998884455", "30.11.2026", "трое суток", true, false, "Жду самокат"},
+                {"chrome", "Ирина", "Хлыстова", "ул. Мира, 99", "Чистые пруды", "+79998884455", "10.11.2026", "трое суток", true, false, "Жду самокат"},
                 // Тестовый набор 2
-                {"chrome", "Алексей", "Smirnov", "Ленинградский пр., 12", "Сокольники", "89001112233", "28.10.2026", "сутки", false, true, "Позвоните заранее"}
+                {"firefox", "Алексей", "Smirnov", "Ленинградский пр., 12", "Сокольники", "89001112233", "28.10.2026", "сутки", false, true, "Позвоните заранее"}
         };
     }
 
     @Before
     public void setup() {
-        //ChromeOptions options = new ChromeOptions();
-        //options.addArguments("--headless=new", "--no-sandbox", "--disable-dev-shm-usage");
-        // driver = new ChromeDriver(options);
-        // driver.manage().window().maximize();
-        if ("firefox".equalsIgnoreCase(browser)) {
-            // Перед этим не забудьте добавить зависимость geckodriver или использовать WebDriverManager
-            driver = new org.openqa.selenium.firefox.FirefoxDriver();
-        } else {
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless=new", "--no-sandbox", "--disable-dev-shm-usage");
-            driver = new ChromeDriver(options);
-        }
+        driver = create(browser);
         driver.manage().window().maximize();
     }
 
